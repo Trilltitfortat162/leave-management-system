@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Apply Leave - {{ user.name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-plus-circle"></i> Apply for Leave
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <!-- Leave Balance Info -->
+                <div class="alert alert-info mb-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="bi bi-info-circle"></i> 
+                            <strong>Your Leave Balance:</strong>
+                        </div>
+                        <h3 class="mb-0">{{ user.leave_balance }} days</h3>
+                    </div>
+                </div>
+
+                <form method="POST" action="{{ url_for('apply_leave') }}" id="leaveForm">
+                    <div class="mb-3">
+                        <label for="start_date" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="end_date" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="reason" class="form-label">Reason for Leave</label>
+                        <textarea class="form-control" id="reason" name="reason" rows="4" 
+                                  placeholder="Please provide a reason for your leave request..." 
+                                  required maxlength="500"></textarea>
+                        <div class="form-text">Maximum 500 characters</div>
+                    </div>
+
+                    <!-- Leave Days Calculator -->
+                    <div class="alert alert-secondary" id="leaveDaysInfo" style="display: none;">
+                        <strong>Total Leave Days:</strong> <span id="totalDays">0</span> day(s)
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-send"></i> Submit Leave Request
+                        </button>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Dashboard
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Instructions Card -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h6 class="card-title">
+                    <i class="bi bi-lightbulb"></i> Important Notes:
+                </h6>
+                <ul class="mb-0">
+                    <li>Ensure you have sufficient leave balance before applying</li>
+                    <li>Leave will be deducted only after admin approval</li>
+                    <li>You cannot apply for past dates</li>
+                    <li>Both start and end dates are inclusive</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Calculate leave days dynamically
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
+    const leaveDaysInfo = document.getElementById('leaveDaysInfo');
+    const totalDaysSpan = document.getElementById('totalDays');
+    const leaveBalance = {{ user.leave_balance }};
+
+    // Set min date to today
+    const today = new Date().toISOString().split('T')[0];
+    startDateInput.setAttribute('min', today);
+    endDateInput.setAttribute('min', today);
+
+    function calculateDays() {
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
+
+        if (startDateInput.value && endDateInput.value && endDate >= startDate) {
+            const diffTime = Math.abs(endDate - startDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            
+            totalDaysSpan.textContent = diffDays;
+            leaveDaysInfo.style.display = 'block';
+
+            if (diffDays > leaveBalance) {
+                leaveDaysInfo.classList.remove('alert-secondary');
+                leaveDaysInfo.classList.add('alert-danger');
+                leaveDaysInfo.innerHTML = '<strong>Warning:</strong> You only have ' + leaveBalance + ' days available. Requested: ' + diffDays + ' days';
+            } else {
+                leaveDaysInfo.classList.remove('alert-danger');
+                leaveDaysInfo.classList.add('alert-secondary');
+                leaveDaysInfo.innerHTML = '<strong>Total Leave Days:</strong> ' + diffDays + ' day(s)';
+            }
+        } else {
+            leaveDaysInfo.style.display = 'none';
+        }
+    }
+
+    startDateInput.addEventListener('change', calculateDays);
+    endDateInput.addEventListener('change', calculateDays);
+
+    startDateInput.addEventListener('change', function() {
+        endDateInput.setAttribute('min', this.value);
+    });
+</script>
+{% endblock %}
